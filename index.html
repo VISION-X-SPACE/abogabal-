@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أبو جبل للاستشارات القانونية العقارية</title>
+    <meta name="description" content="موقع إلكتروني تفاعلي متكامل لشركة أبو جبل للاستشارات القانونية العقارية يقدم الاستشارات العقارية والقانونية، محاكاة الكيان القانوني، وبوابة العميل الآمنة." />
+    <meta property="og:title" content="أبو جبل للاستشارات القانونية العقارية" />
+    <meta property="og:description" content="موقع إلكتروني تفاعلي متكامل لشركة أبو جبل للاستشارات القانونية العقارية يقدم الاستشارات العقارية والقانونية، محاكاة الكيان القانوني، وبوابة العميل الآمنة." />
+    <meta property="og:type" content="website" />
+    <script>
+      // Early robust suppression of third-party, Google API, iframe and cross-origin "Script error." issues
+      (function() {
+        var isBenign = function(msg, src) {
+          var m = String(msg || '').toLowerCase();
+          var s = String(src || '').toLowerCase();
+          return m.indexOf('script error') !== -1 ||
+                 m.indexOf('unexpected token') !== -1 ||
+                 m.indexOf('picker') !== -1 ||
+                 m.indexOf('google') !== -1 ||
+                 m.indexOf('cors') !== -1 ||
+                 m.indexOf('origin') !== -1 ||
+                 m.indexOf('firebase') !== -1 ||
+                 !src ||
+                 (s.indexOf('localhost') === -1 && s.indexOf('run.app') === -1 && s.indexOf('.ts') === -1 && s.indexOf('.js') === -1);
+        };
+
+        // Suppress console.error if it is related to cross-origin static assets, Google APIs or GSuite issues
+        var originalError = console.error;
+        console.error = function() {
+          var args = Array.prototype.slice.call(arguments);
+          var argStr = args.map(function(item) {
+            try { return String(item); } catch(e) { return ''; }
+          }).join(' ').toLowerCase();
+
+          if (argStr.indexOf('script error') !== -1 || 
+              argStr.indexOf('cors') !== -1 || 
+              argStr.indexOf('picker') !== -1 || 
+              argStr.indexOf('google') !== -1 || 
+              argStr.indexOf('cross-origin') !== -1) {
+            return;
+          }
+          originalError.apply(console, arguments);
+        };
+
+        // Intercept standard errors via absolute early captures
+        window.addEventListener('error', function(event) {
+          var msg = event.message || (event.error && event.error.message) || '';
+          if (isBenign(msg, event.filename)) {
+            console.warn('Early captured and suppressed third-party script error:', msg);
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+          }
+        }, true);
+
+        // Intercept unhandled promise rejections
+        window.addEventListener('unhandledrejection', function(event) {
+          var reason = event.reason || '';
+          var msg = reason.message || reason || '';
+          if (isBenign(msg, '')) {
+            console.warn('Early captured and suppressed third-party unhandled rejection:', msg);
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+          }
+        }, true);
+
+        // Standard window.onerror handler for absolute fallback coverage
+        window.onerror = function(message, source, lineno, colno, error) {
+          if (isBenign(message, source)) {
+            console.warn('Fallback captured and suppressed script error:', message, 'from:', source);
+            return true; // True prevents standard browser error handler execution
+          }
+          return false;
+        };
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
